@@ -1,0 +1,13 @@
+<mat-drawer-container>
+  <mat-drawer #drawer [mode]="(mobileView$ | async)? 'over':'side'" [opened]="!(mobileView$ | async)" position="end"
+              class="mat-elevation-z1">
+    Drawer content
+  </mat-drawer>
+  <mat-drawer-content>
+    <mat-toolbar color="white">
+      <span></span>
+      <span fxFlex="1 1 auto"></span>
+    </mat-toolbar>
+
+  </mat-drawer-content>
+</mat-drawer-container>

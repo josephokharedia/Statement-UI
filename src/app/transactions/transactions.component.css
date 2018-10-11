@@ -1,0 +1,52 @@
+mat-drawer {
+  width: 17em;
+}
+
+@media only screen and (min-width: 600px) {
+  mat-drawer {
+    width: 20em;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  mat-table {
+    height: 28em !important;
+  }
+}
+
+mat-drawer-container {
+  height: 100%;
+  margin-top: 0.1em;
+}
+
+mat-toolbar {
+  /*background: #fff;*/
+}
+
+mat-table {
+  margin: 0.5em;
+  height: 35em;
+  overflow: auto;
+}
+
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+mat-row {
+  cursor: pointer;
+}
+
+.example-loading-shade {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 100px;
+  right: 0;
+  background: rgba(0, 0, 0, 0.15);
+  z-index: 1000000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

@@ -1,0 +1,16 @@
+mat-drawer {
+  width: 35em;
+}
+
+mat-drawer-container {
+  height: 100%;
+  margin-top: 0.1em;
+}
+
+mat-toolbar {
+  /*background: #fff;*/
+}
+
+mat-table {
+  margin:0.5em;
+}
