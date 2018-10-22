@@ -1,10 +1,11 @@
 import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {ObservableMedia} from '@angular/flex-layout';
 import {fromEvent, Observable} from 'rxjs';
-import {debounceTime, distinctUntilChanged, map, switchMap} from 'rxjs/operators';
-import {Transaction} from '../shared/shared.model';
-import {ActivatedRoute} from '@angular/router';
+import {debounceTime, distinctUntilChanged, map, tap} from 'rxjs/operators';
+import {TransactionsDatasource} from './transactions-datasource';
 import {TransactionService} from './transaction.service';
+import {MatPaginator, MatSelectionList, MatSort} from '@angular/material';
+import {Label} from '../shared/shared.model';
 
 @Component({
   selector: 'app-transactions',
@@ -15,30 +16,71 @@ export class TransactionsComponent implements OnInit, AfterViewInit {
 
   mobileView$: Observable<Boolean>;
   readonly displayedColumns: string[] = ['date', 'description', 'amount', 'balance'];
-  transactions$: Observable<Transaction[]>;
   @ViewChild('filter', {read: ElementRef})
   filter: ElementRef;
-  search$: Observable<Transaction[]>;
+  dataSource: TransactionsDatasource;
+  @ViewChild(MatPaginator)
+  paginator: MatPaginator;
+  @ViewChild(MatSort)
+  sort: MatSort;
+  @ViewChild(MatSelectionList)
+  categorySelectionList: MatSelectionList;
 
-  constructor(media: ObservableMedia, private route: ActivatedRoute, private transactionService: TransactionService) {
-    this.mobileView$ = media.asObservable().pipe(map(mc => mc.mqAlias === 'xs'));
+  readonly categories: Label[] = [
+    {_id: '0', name: 'Groceries'},
+    {_id: '1', name: 'Entertainment'},
+    {_id: '2', name: 'Salaries'},
+    {_id: '3', name: 'Automobile'},
+    {_id: '4', name: 'Medical'},
+  ];
+
+  constructor(private media: ObservableMedia, private service: TransactionService) {
   }
 
   ngOnInit() {
-    this.transactions$ = fromEvent(this.filter.nativeElement, 'keyup')
-      .pipe(
-        map(() => this.filter.nativeElement.value),
-        debounceTime(400),
-        distinctUntilChanged(),
-        switchMap(search => this.transactionService.getTransactions({search}))
-      );
+    this.mobileView$ = this.media.asObservable().pipe(map(mc => mc.mqAlias === 'xs'));
+    this.dataSource = new TransactionsDatasource(this.service);
   }
-
-  ngAfterViewInit() {
-    this.filter.nativeElement.dispatchEvent(new Event('keyup', {bubbles: false}));
-  }
-
 
   selectRow() {
+  }
+
+  ngAfterViewInit(): void {
+    fromEvent(this.filter.nativeElement, 'keyup')
+      .pipe(
+        debounceTime(400),
+        distinctUntilChanged(),
+        tap(() => {
+          this.paginator.pageIndex = 0;
+          this.getTransactions();
+        })
+      ).subscribe();
+
+
+    this.paginator.page
+      .pipe(tap(() => this.getTransactions()))
+      .subscribe();
+
+    this.sort.sortChange
+      .pipe(tap(() => {
+        this.paginator.pageIndex = 0;
+        this.getTransactions();
+      })).subscribe();
+
+    this.categorySelectionList.selectionChange
+      .pipe(tap(() => {
+        console.log('selectedOptions:', this.categorySelectionList.selectedOptions);
+      })).subscribe();
+
+    this.getTransactions();
+  }
+
+  getTransactions() {
+    const sortField = `${this.sort.active}`;
+    const sortDirection = `${this.sort.direction}`;
+
+    this.dataSource.getTransactions(
+      this.filter.nativeElement.value, null, null,
+      sortField, sortDirection, this.paginator.pageIndex, this.paginator.pageSize);
   }
 }

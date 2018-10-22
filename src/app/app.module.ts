@@ -3,12 +3,20 @@ import {NgModule} from '@angular/core';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {
   MatButtonModule,
+  MatCheckboxModule,
+  MatChipsModule,
+  MatDatepickerModule,
+  MatDialogModule,
+  MatExpansionModule,
   MatFormFieldModule,
   MatIconModule,
   MatInputModule,
   MatListModule,
+  MatNativeDateModule,
+  MatPaginatorModule,
   MatProgressSpinnerModule,
   MatSidenavModule,
+  MatSortModule,
   MatTableModule,
   MatTabsModule,
   MatToolbarModule,
@@ -20,6 +28,9 @@ import {HttpClientModule} from '@angular/common/http';
 import {AppComponent} from './app.component';
 import {TransactionsComponent} from './transactions/transactions.component';
 import {StatementsComponent} from './statements/statements.component';
+import {LabelsComponent} from './labels/labels.component';
+import {AddLabelComponent} from './labels/add-label.component';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 
 const appRoutes: Routes = [
@@ -31,19 +42,24 @@ const appRoutes: Routes = [
   declarations: [
     AppComponent,
     TransactionsComponent,
-    StatementsComponent
+    StatementsComponent,
+    LabelsComponent,
+    AddLabelComponent
   ],
   imports: [
     BrowserModule, BrowserAnimationsModule, MatToolbarModule, MatSidenavModule, MatButtonModule,
-    MatIconModule, MatListModule, MatFormFieldModule, FlexLayoutModule, HttpClientModule, MatTableModule, MatTabsModule,
-    MatInputModule, MatProgressSpinnerModule,
+    MatIconModule, MatListModule, MatFormFieldModule, FlexLayoutModule, HttpClientModule, MatTableModule,
+    MatTabsModule, MatInputModule, MatProgressSpinnerModule, MatPaginatorModule, MatSortModule,
+    MatDatepickerModule, MatNativeDateModule, MatListModule, MatCheckboxModule, MatExpansionModule, MatChipsModule, MatDialogModule,
+    FormsModule, ReactiveFormsModule,
     RouterModule.forRoot(
       appRoutes,
       {enableTracing: false} // <-- debugging purposes only
     )
   ],
   providers: [ObservableMediaProvider],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [AddLabelComponent],
 })
 export class AppModule {
 }

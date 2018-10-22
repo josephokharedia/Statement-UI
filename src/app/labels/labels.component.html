@@ -1,0 +1,47 @@
+<div class="container">
+  <div fxLayout="row" fxLayoutAlign="end" class="action-container">
+    <button mat-raised-button color="primary" (click)="addLabel()">ADD CATEGORY</button>
+  </div>
+  <mat-accordion displayMode="flat">
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Groceries
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <div>
+        <mat-chip-list>
+          <mat-chip>Papadum</mat-chip>
+          <mat-chip>Naan</mat-chip>
+          <mat-chip>Dal</mat-chip>
+          <mat-chip>Papadum</mat-chip>
+          <mat-chip>Naan</mat-chip>
+          <mat-chip>Dal</mat-chip>
+          <mat-chip>Papadum</mat-chip>
+          <mat-chip>Naan</mat-chip>
+          <mat-chip>Dal</mat-chip>
+        </mat-chip-list>
+      </div>
+
+      <mat-action-row>
+        <button mat-button color="primary">EDIT</button>
+        <button mat-button>DELETE</button>
+      </mat-action-row>
+    </mat-expansion-panel>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Airtime/Bundle
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <p>This is the primary content of the panel.</p>
+
+      <mat-action-row>
+        <button mat-button color="primary">EDIT</button>
+        <button mat-button color="warn">DELETE</button>
+      </mat-action-row>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>

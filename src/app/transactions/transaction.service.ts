@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Transaction} from '../shared/shared.model';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 
 @Injectable({
@@ -17,8 +17,17 @@ export class TransactionService {
     this.transactions.push(tx2);
   }
 
-  getTransactions(params = {}): Observable<Transaction[]> {
-    // return of(this.transactions);
-    return this.http.get<Transaction[]>('/api/transactions', {params});
+  getTransactions(search: string, fromDate: Date, toDate: Date, sortField: string, sortDirection: string,
+                  pageIndex = 0, pageSize = 10): Observable<Transaction[]> {
+    return this.http.get<Transaction[]>('/api/transactions', {
+      params: new HttpParams()
+        .set('search', search)
+        .set('fromDate', `${fromDate}`)
+        .set('toDate', `${toDate}`)
+        .set('sortField', sortField)
+        .set('sortDirection', sortDirection)
+        .set('pageIndex', `${pageIndex}`)
+        .set('pageSize', `${pageSize}`)
+    });
   }
 }
