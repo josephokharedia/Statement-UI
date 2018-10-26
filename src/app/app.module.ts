@@ -28,9 +28,10 @@ import {HttpClientModule} from '@angular/common/http';
 import {AppComponent} from './app.component';
 import {TransactionsComponent} from './transactions/transactions.component';
 import {StatementsComponent} from './statements/statements.component';
-import {LabelsComponent} from './labels/labels.component';
-import {AddLabelComponent} from './labels/add-label.component';
+import {CategoriesComponent} from './categories/categories.component';
+import {ManageCategoryDialogComponent} from './categories/manage-category-dialog.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { FilterComponent } from './filter/filter.component';
 
 
 const appRoutes: Routes = [
@@ -43,8 +44,9 @@ const appRoutes: Routes = [
     AppComponent,
     TransactionsComponent,
     StatementsComponent,
-    LabelsComponent,
-    AddLabelComponent
+    CategoriesComponent,
+    ManageCategoryDialogComponent,
+    FilterComponent
   ],
   imports: [
     BrowserModule, BrowserAnimationsModule, MatToolbarModule, MatSidenavModule, MatButtonModule,
@@ -59,7 +61,7 @@ const appRoutes: Routes = [
   ],
   providers: [ObservableMediaProvider],
   bootstrap: [AppComponent],
-  entryComponents: [AddLabelComponent],
+  entryComponents: [ManageCategoryDialogComponent],
 })
 export class AppModule {
 }

@@ -3,38 +3,11 @@
               class="mat-elevation-z1">
     <mat-tab-group>
       <mat-tab label="Filter">
-        <div fxLayout="column" class="filter-container">
-          <mat-form-field appearance="fill" fxFlex>
-            <input matInput [matDatepicker]="fromPicker" placeholder="Start date">
-            <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
-            <mat-datepicker #fromPicker></mat-datepicker>
-          </mat-form-field>
-          <mat-form-field appearance="fill" fxFlex>
-            <input matInput [matDatepicker]="toPicker" placeholder="End date">
-            <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
-            <mat-datepicker #toPicker></mat-datepicker>
-          </mat-form-field>
-
-          <mat-divider></mat-divider>
-
-
-          <mat-selection-list #categoryList>
-            <div fxLayout="row" fxLayoutAlign="space-between none">
-              <h3 mat-subheader>Labels</h3>
-              <mat-checkbox #selectAll class="select-all"
-                            (change)="selectAll.checked? categoryList.selectAll() : categoryList.deselectAll()">
-                Select All
-              </mat-checkbox>
-            </div>
-            <mat-list-option *ngFor="let category of categories">
-              {{category.name}}
-            </mat-list-option>
-          </mat-selection-list>
-
-        </div>
+        <app-filter (fromDate)="setFromDate($event)" (toDate)="setToDate($event)"
+                    (categoryIds)="setCategoryIds($event)"></app-filter>
       </mat-tab>
       <mat-tab label="Category">
-        <app-labels></app-labels>
+        <app-categories></app-categories>
       </mat-tab>
     </mat-tab-group>
   </mat-drawer>
@@ -63,7 +36,16 @@
         </ng-container>
         <ng-container matColumnDef="description">
           <mat-header-cell *matHeaderCellDef mat-sort-header>Description</mat-header-cell>
-          <mat-cell *matCellDef="let tx">{{tx.description}}</mat-cell>
+          <mat-cell *matCellDef="let tx" fxLayout="column" fxLayoutAlign="center none">
+            <div class="cell-description-text">{{tx.description}}</div>
+            <div class="cell-description-category">
+              <mat-chip-list>
+                <mat-chip [selectable]="false" [disableRipple]="true" [selected]="false"
+                          *ngFor="let category of tx.categories">{{category.name}}
+                </mat-chip>
+              </mat-chip-list>
+            </div>
+          </mat-cell>
         </ng-container>
         <ng-container matColumnDef="amount">
           <mat-header-cell fxFlex="100px" fxFlex.lt-md="60px" *matHeaderCellDef mat-sort-header>Amount</mat-header-cell>

@@ -4,8 +4,8 @@ import {fromEvent, Observable} from 'rxjs';
 import {debounceTime, distinctUntilChanged, map, tap} from 'rxjs/operators';
 import {TransactionsDatasource} from './transactions-datasource';
 import {TransactionService} from './transaction.service';
-import {MatPaginator, MatSelectionList, MatSort} from '@angular/material';
-import {Label} from '../shared/shared.model';
+import {MatPaginator, MatSort} from '@angular/material';
+import {Category} from '../shared/shared.model';
 
 @Component({
   selector: 'app-transactions',
@@ -13,6 +13,10 @@ import {Label} from '../shared/shared.model';
   styleUrls: ['./transactions.component.css']
 })
 export class TransactionsComponent implements OnInit, AfterViewInit {
+
+  _fromDate: Date;
+  _toDate: Date = new Date();
+  _categoryIds: string[] = [];
 
   mobileView$: Observable<Boolean>;
   readonly displayedColumns: string[] = ['date', 'description', 'amount', 'balance'];
@@ -23,10 +27,8 @@ export class TransactionsComponent implements OnInit, AfterViewInit {
   paginator: MatPaginator;
   @ViewChild(MatSort)
   sort: MatSort;
-  @ViewChild(MatSelectionList)
-  categorySelectionList: MatSelectionList;
 
-  readonly categories: Label[] = [
+  readonly categories: Category[] = [
     {_id: '0', name: 'Groceries'},
     {_id: '1', name: 'Entertainment'},
     {_id: '2', name: 'Salaries'},
@@ -67,11 +69,24 @@ export class TransactionsComponent implements OnInit, AfterViewInit {
         this.getTransactions();
       })).subscribe();
 
-    this.categorySelectionList.selectionChange
-      .pipe(tap(() => {
-        console.log('selectedOptions:', this.categorySelectionList.selectedOptions);
-      })).subscribe();
+    this.getTransactions();
+  }
 
+  setFromDate(date: Date) {
+    this._fromDate = date;
+    this.paginator.pageIndex = 0;
+    this.getTransactions();
+  }
+
+  setToDate(date: Date) {
+    this._toDate = date;
+    this.paginator.pageIndex = 0;
+    this.getTransactions();
+  }
+
+  setCategoryIds(categoryIds: string[]) {
+    this._categoryIds = categoryIds;
+    this.paginator.pageIndex = 0;
     this.getTransactions();
   }
 
@@ -80,7 +95,7 @@ export class TransactionsComponent implements OnInit, AfterViewInit {
     const sortDirection = `${this.sort.direction}`;
 
     this.dataSource.getTransactions(
-      this.filter.nativeElement.value, null, null,
+      this.filter.nativeElement.value, this._categoryIds, this._fromDate, this._toDate,
       sortField, sortDirection, this.paginator.pageIndex, this.paginator.pageSize);
   }
 }

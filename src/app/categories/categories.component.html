@@ -1,0 +1,31 @@
+<div class="container">
+  <div fxLayout="row" fxLayoutAlign="end" class="action-container">
+    <button mat-raised-button color="primary" (click)="addCategoryDialog()">CATEGORY
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+  <mat-accordion displayMode="flat">
+    <mat-expansion-panel *ngFor="let category of (categories$ | async)">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{category.name}}
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <div>
+        <mat-chip-list>
+          <mat-chip *ngFor="let tag of category.tags">{{tag}}</mat-chip>
+        </mat-chip-list>
+      </div>
+
+      <mat-action-row>
+        <button mat-icon-button (click)="editCategoryDialog(category)">
+          <mat-icon color="primary">edit</mat-icon>
+        </button>
+        <button mat-icon-button (click)="deleteCategoryDialog(category)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-action-row>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>

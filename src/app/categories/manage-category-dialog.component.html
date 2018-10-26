@@ -1,0 +1,43 @@
+<h1 mat-dialog-title>{{action}} CATEGORY</h1>
+<ng-container *ngIf="action !== ActionType.DELETE " [ngTemplateOutlet]="addOrEditDialog"></ng-container>
+<ng-container *ngIf="action === ActionType.DELETE " [ngTemplateOutlet]="deleteDialog"></ng-container>
+
+
+<ng-template #addOrEditDialog>
+  <div mat-dialog-content
+       [formGroup]="categoryForm">
+    <mat-form-field appearance="fill" class="form">
+      <mat-label>Name</mat-label>
+      <input matInput formControlName="name" required>
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="form">
+      <mat-chip-list #chipList formControlName="tags" required>
+        <mat-chip *ngFor="let tag of category.tags" [selectable]="true"
+                  (removed)="removeTagFromCategory(tag)" [removable]="true">
+          {{tag}}
+          <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+        <input matInput placeholder="Tags ..."
+               [matChipInputFor]="chipList"
+               [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+               [matChipInputAddOnBlur]="true"
+               (matChipInputTokenEnd)="addTagToCategory($event)">
+      </mat-chip-list>
+      <mat-hint>Type the tags and separate with comma or Enter</mat-hint>
+    </mat-form-field>
+  </div>
+</ng-template>
+
+<ng-template #deleteDialog>
+  <mat-dialog-content class="mat-typography">
+    Are you sure you want to delete Category "{{category.name}}"
+  </mat-dialog-content>
+</ng-template>
+
+
+<div mat-dialog-actions align="end">
+  <button mat-button (click)="cancel()">CANCEL</button>
+  <button mat-button color="primary" (click)="submit(category)" [disabled]="!(allowSubmit$ | async)">
+    {{action === ActionType.DELETE? 'DELETE' : 'SUBMIT'}}
+  </button>
+</div>

@@ -5,9 +5,10 @@ export interface Transaction {
   amount: Number;
   balance: Number;
   hash: string;
+  categories: Category[];
 }
 
-export interface Label {
+export interface Category {
   _id?: string;
   name?: string;
   tags?: string[];

@@ -24,10 +24,10 @@ export class TransactionsDatasource extends DataSource<Transaction> {
     this.loadingSubject.complete();
   }
 
-  getTransactions(search, fromDate: Date, toDate: Date,
+  getTransactions(search, categoryIds, fromDate: Date, toDate: Date,
                   sortField: string, sortDirection: string, pageIndex = 0, pageSize = 10) {
     // this.loadingSubject.next(true);
-    return this.service.getTransactions(search, fromDate, toDate,
+    return this.service.retrieve(search, categoryIds, fromDate, toDate,
       sortField, sortDirection, pageIndex, pageSize)
       .pipe(
         catchError(() => of([])),

@@ -42,17 +42,20 @@ mat-row {
   cursor: pointer;
 }
 
-.filter-container {
-  padding: 1em;
-}
-
 .mat-slider-thumb-label {
   width: 35px;
   height: 35px;
 }
 
-.select-all {
-  font-size: 14px;
-  font-weight: 500;
-  color: rgba(0, 0, 0, .54);
+.cell-description-text {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  /*white-space: nowrap;*/
+  /*width: 100%;*/
+  font-weight: bold;
+}
+
+mat-chip {
+  font-size: 12px;
+  line-height: 0.8em;
 }

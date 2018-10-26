@@ -1,0 +1,10 @@
+.filter-container {
+  padding: 1em;
+}
+
+.select-all {
+  /*font-size: 14px;*/
+  /*font-weight: 500;*/
+  /*color: rgba(0, 0, 0, .54);*/
+  padding: 0 16px;
+}

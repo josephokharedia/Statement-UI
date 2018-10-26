@@ -8,26 +8,23 @@ import {Observable} from 'rxjs';
 })
 export class TransactionService {
 
-  transactions: Transaction[] = [];
-
   constructor(private http: HttpClient) {
-    const tx1 = {_id: '1', accountNumber: '000000', description: 'Transaction 1', amount: 50.45, balance: 300.00, hash: '1'};
-    const tx2 = {_id: '2', accountNumber: '000000', description: 'Transaction 2', amount: 45.23, balance: 420.00, hash: '2'};
-    this.transactions.push(tx1);
-    this.transactions.push(tx2);
   }
 
-  getTransactions(search: string, fromDate: Date, toDate: Date, sortField: string, sortDirection: string,
-                  pageIndex = 0, pageSize = 10): Observable<Transaction[]> {
+  retrieve(search: string, categoryIds: string[] = [], fromDate: Date, toDate: Date, sortField: string, sortDirection: string,
+           pageIndex = 0, pageSize = 10): Observable<Transaction[]> {
+    let httpParams = new HttpParams()
+      .set('search', search)
+      .set('fromDate', `${fromDate}`)
+      .set('toDate', `${toDate}`)
+      .set('sortField', sortField)
+      .set('sortDirection', sortDirection)
+      .set('pageIndex', `${pageIndex}`)
+      .set('pageSize', `${pageSize}`);
+
+    categoryIds.forEach(val => httpParams = httpParams.append('category', val));
     return this.http.get<Transaction[]>('/api/transactions', {
-      params: new HttpParams()
-        .set('search', search)
-        .set('fromDate', `${fromDate}`)
-        .set('toDate', `${toDate}`)
-        .set('sortField', sortField)
-        .set('sortDirection', sortDirection)
-        .set('pageIndex', `${pageIndex}`)
-        .set('pageSize', `${pageSize}`)
+      params: httpParams
     });
   }
 }
